@@ -50,19 +50,37 @@ function DetailPage() {
   if (isLoading) return <p className="status">Loading {name}…</p>;
   if (error) return <p className="status status-error">{error}</p>;
 
+  // Get the first Pokémon type to determine the detail page theme
+  const primaryType = pokemon.types[0].type.name;
+
   return (
-    <div className="detail-page">
-      <Link to="/" className="back-link">← Back to list</Link>
-      <img
-        src={pokemon.sprites.other["official-artwork"].front_default}
-        alt={pokemon.name}
-        width={200}
-        height={200}
-      />
+    <div className={`detail-page detail-${primaryType}`}>
+      <Link to="/" className="back-link">
+        ← Back to list
+      </Link>
+
+      <div className="detail-image">
+        <img
+          src={pokemon.sprites.other["official-artwork"].front_default}
+          alt={pokemon.name}
+          width={200}
+          height={200}
+        />
+      </div>
+
       <h2>{capitalize(pokemon.name)}</h2>
-      <p className="pokemon-types">
-        {pokemon.types.map((t) => t.type.name).join(", ")}
-      </p>
+
+      <div className="type-badges">
+        {pokemon.types.map((t) => (
+          <span
+            key={t.type.name}
+            className={`type-badge type-${t.type.name}`}
+          >
+            {capitalize(t.type.name)}
+          </span>
+        ))}
+      </div>
+
       <ul className="stat-list">
         {pokemon.stats.map((s) => (
           <li key={s.stat.name}>
